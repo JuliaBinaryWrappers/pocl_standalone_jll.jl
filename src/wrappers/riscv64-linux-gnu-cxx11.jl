@@ -24,7 +24,12 @@ function __init__()
     )
 
     JLLWrappers.@generate_init_footer()
-    # expose JLL binaries to the library
+    # XXX: Clang_jll does not have a functional clang binary on macOS,
+#      as it's configured without a default sdkroot (see #9221)
+if Sys.isapple()
+    ENV["SDKROOT"] = "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk"
+end
+# expose JLL binaries to the library
 # XXX: Scratch.jl is unusably slow with JLLWrapper-emitted @compiler_options
 #bindir = @get_scratch!("bin")
 bindir = abspath(first(Base.DEPOT_PATH), "scratchspaces", string(Base.PkgId(@__MODULE__).uuid), "bin")
