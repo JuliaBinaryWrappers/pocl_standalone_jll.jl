@@ -3,7 +3,6 @@ export libpocl, poclcc
 
 using Hwloc_jll
 using Zstd_jll
-using SPIRV_LLVM_Translator_jll
 using SPIRV_Tools_jll
 using Clang_unified_jll
 using LLD_unified_jll
@@ -11,7 +10,7 @@ JLLWrappers.@generate_wrapper_header("pocl_standalone")
 JLLWrappers.@declare_library_product(libpocl, "pocl_standalone.dll")
 JLLWrappers.@declare_executable_product(poclcc)
 function __init__()
-    JLLWrappers.@generate_init_header(Hwloc_jll, Zstd_jll, SPIRV_LLVM_Translator_jll, SPIRV_Tools_jll, Clang_unified_jll, LLD_unified_jll)
+    JLLWrappers.@generate_init_header(Hwloc_jll, Zstd_jll, SPIRV_Tools_jll, Clang_unified_jll, LLD_unified_jll)
     JLLWrappers.@init_library_product(
         libpocl,
         "bin\\pocl_standalone.dll",
@@ -113,11 +112,6 @@ ENV["POCL_PATH_SPIRV_LINK"] =
 ENV["POCL_PATH_CLANG"] =
     generate_wrapper_script("clang", Clang_unified_jll.clang_path,
                             Clang_unified_jll.LIBPATH[], Clang_unified_jll.PATH[])
-ENV["POCL_PATH_LLVM_SPIRV"] =
-    generate_wrapper_script("llvm-spirv",
-                            SPIRV_LLVM_Translator_jll.llvm_spirv_path,
-                            SPIRV_LLVM_Translator_jll.LIBPATH[],
-                            SPIRV_LLVM_Translator_jll.PATH[])
 ld_path = if Sys.islinux()
         LLD_unified_jll.ld_lld_path
     elseif Sys.isapple()
