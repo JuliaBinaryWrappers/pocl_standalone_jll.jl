@@ -3,11 +3,12 @@ export libpocl, poclcc
 
 using Hwloc_jll
 using Zstd_jll
+using SLEEF_jll
 JLLWrappers.@generate_wrapper_header("pocl_standalone")
 JLLWrappers.@declare_library_product(libpocl, "libpocl_standalone.so.2")
 JLLWrappers.@declare_executable_product(poclcc)
 function __init__()
-    JLLWrappers.@generate_init_header(Hwloc_jll, Zstd_jll)
+    JLLWrappers.@generate_init_header(Hwloc_jll, Zstd_jll, SLEEF_jll)
     JLLWrappers.@init_library_product(
         libpocl,
         "lib/libpocl_standalone.so",
